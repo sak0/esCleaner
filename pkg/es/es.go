@@ -10,6 +10,7 @@ import (
 	"time"
 	"github.com/elastic/go-elasticsearch/esapi"
 	"strings"
+	"strconv"
 )
 
 const (
@@ -135,7 +136,7 @@ func (e *Esssss) streamDeleteIds(stop, input chan interface{}) chan interface{} 
 					glog.V(2).Infof("decode failed: %v", err)
 					continue
 				}
-				glog.V(3).Infof("%v %v", res.StatusCode, data)
+				glog.V(5).Infof("%v %v", res.StatusCode, data)
 				res.Body.Close()
 				outStream<- ids
 			}
@@ -145,7 +146,7 @@ func (e *Esssss) streamDeleteIds(stop, input chan interface{}) chan interface{} 
 	return outStream
 }
 
-func (e *Esssss) streamGetIdsToDeleted(stop chan interface{}) chan interface{} {
+func (e *Esssss) streamGetIdsToDeleted(stop chan interface{}, dateToDelete string) chan interface{} {
 	outStream := make(chan interface{})
 
 	go func() {
@@ -158,7 +159,7 @@ func (e *Esssss) streamGetIdsToDeleted(stop chan interface{}) chan interface{} {
 					"must": []map[string]interface{}{
 						{
 							"term": map[string]interface{}{
-								fmt.Sprintf("%s", e.timeField): fmt.Sprintf("%s", e.dateBefore),
+								fmt.Sprintf("%s", e.timeField): fmt.Sprintf("%s", dateToDelete),
 							},
 						},
 					},
@@ -201,7 +202,7 @@ func (e *Esssss) streamGetIdsToDeleted(stop chan interface{}) chan interface{} {
 		ctx := context.Background()
 		//totalPage = 1
 		for page := 0; page < totalPage; page++ {
-			glog.V(2).Infof("streamGetAllOrders Page-%d", page)
+			glog.V(3).Infof("streamGetIdsToDeleted Page-%d", page)
 			select {
 			case <-stop:
 				ctx.Done()
@@ -231,11 +232,14 @@ func (e *Esssss) streamGetIdsToDeleted(stop chan interface{}) chan interface{} {
 }
 
 func (e *Esssss) Run(stop chan interface{}) {
-	var num int
-	start := time.Now()
-	for obj := range e.streamDeleteIds(stop, e.streamGetIdsToDeleted(stop)) {
-		num++
-		glog.V(5).Infof("%v", obj)
+	for iDate := 20180501; iDate < 20180526; iDate++ {
+		date := strconv.Itoa(iDate)
+		var num int
+		start := time.Now()
+		for obj := range e.streamDeleteIds(stop, e.streamGetIdsToDeleted(stop, date)) {
+			num++
+			glog.V(5).Infof("%v", obj)
+		}
+		glog.V(2).Infof("[%s] delete %d docs spend %v", date, num * e.pageSize, time.Since(start))
 	}
-	glog.V(2).Infof("delete %d docs spend %v", num * e.pageSize, time.Since(start))
 }
