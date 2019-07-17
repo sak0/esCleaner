@@ -220,7 +220,7 @@ func (e *Esssss) streamGetIdsToDeleted(stop chan interface{}) chan interface{} {
 					glog.V(2).Infof("decode error: %v", err)
 					return
 				}
-				ids := e.getDeleteIds(scrollResp.Hits)
+				ids := e.getDeleteIds(resp.Hits)
 				outStream <- ids
 				res.Body.Close()
 			}

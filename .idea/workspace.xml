@@ -57,8 +57,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pkg/es/es.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="139" column="31" lean-forward="true" selection-start-line="139" selection-start-column="31" selection-end-line="139" selection-end-column="31" />
+            <state relative-caret-position="138">
+              <caret line="204" column="20" lean-forward="true" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
               <folding>
                 <element signature="e#12#139#0" expanded="true" />
               </folding>
@@ -139,7 +139,7 @@
       <module name="esCleaner" />
       <working_directory value="$PROJECT_DIR$/" />
       <go_parameters value="-i " />
-      <parameters value="-v 2 -alsologtostderr -es http://10.0.56.230:9346,http://10.0.56.231:9346,http://10.0.56.232:9346 -index hive_sale_stat_dayly_new -field calday" />
+      <parameters value="-v 3 -alsologtostderr -es http://10.0.56.230:9346,http://10.0.56.231:9346,http://10.0.56.232:9346 -index hive_sale_stat_dayly_new -field calday -date 20180529" />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/main.go" />
       <package value="github.com/sak0/esCleaner" />
@@ -165,7 +165,7 @@
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.16923077" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.17435898" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -198,8 +198,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pkg/es/es.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="139" column="31" lean-forward="true" selection-start-line="139" selection-start-column="31" selection-end-line="139" selection-end-column="31" />
+        <state relative-caret-position="138">
+          <caret line="204" column="20" lean-forward="true" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
           <folding>
             <element signature="e#12#139#0" expanded="true" />
           </folding>
