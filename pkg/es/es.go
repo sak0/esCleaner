@@ -135,7 +135,7 @@ func (e *Esssss) streamDeleteIds(stop, input chan interface{}) chan interface{} 
 					glog.V(2).Infof("decode failed: %v", err)
 					continue
 				}
-				glog.V(2).Infof("%v %v", res.StatusCode, data)
+				glog.V(3).Infof("%v %v", res.StatusCode, data)
 				res.Body.Close()
 				outStream<- ids
 			}
@@ -235,7 +235,7 @@ func (e *Esssss) Run(stop chan interface{}) {
 	start := time.Now()
 	for obj := range e.streamDeleteIds(stop, e.streamGetIdsToDeleted(stop)) {
 		num++
-		glog.V(2).Infof("%v", obj)
+		glog.V(5).Infof("%v", obj)
 	}
 	glog.V(2).Infof("delete %d docs spend %v", num * e.pageSize, time.Since(start))
 }
