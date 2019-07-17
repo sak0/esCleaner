@@ -7,28 +7,29 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-)
+	)
 
 var (
 	indexName		string
 	timeField 		string
-	dateBefore		string
+	dateEnd			int
+	dateStart 		int
 	esAddrString 	string
 )
 
 func init() {
 	flag.StringVar(&indexName, "index", "testIndex", "index name to clean.")
 	flag.StringVar(&timeField, "field", "timestamp", "filed for time.")
-	flag.StringVar(&dateBefore, "date", "20180529", "date for clean.")
+	flag.IntVar(&dateEnd, "end", 20180529, "end date for clean.")
 	flag.StringVar(&esAddrString, "es", "http://192.168.1.1:9200,http://192.168.1.1:9200,http://192.168.1.1:9200",
 		"es cluster addr")
-
+	flag.IntVar(&dateStart, "start", 20180501, "start date to clean")
 
 	flag.Parse()
 }
 
 func main() {
-	worker, err := es.New(strings.Split(esAddrString, ","), indexName, timeField, dateBefore)
+	worker, err := es.New(strings.Split(esAddrString, ","), indexName, timeField, dateStart, dateEnd)
 	if err != nil {
 		panic(err)
 	}

@@ -48,12 +48,13 @@ type GenericHit struct {
 type Esssss struct {
 	indexName 	string
 	timeField 	string
-	dateBefore 	string
+	dateStart 	int
+	dateEnd 	int
 	pageSize 	int
 	c 			*elasticsearch.Client
 }
 
-func New(addrs []string, indexName, timeField, dateBefore string) (*Esssss, error) {
+func New(addrs []string, indexName, timeField string, dateStart, dateEnd int) (*Esssss, error) {
 	esConfig := elasticsearch.Config{
 		Addresses: addrs,
 	}
@@ -66,7 +67,8 @@ func New(addrs []string, indexName, timeField, dateBefore string) (*Esssss, erro
 	return &Esssss {
 		indexName:indexName,
 		timeField:timeField,
-		dateBefore:dateBefore,
+		dateEnd:dateEnd,
+		dateStart:dateStart,
 		pageSize:defaultPageSize,
 		c:esClient,
 	}, nil
@@ -232,7 +234,7 @@ func (e *Esssss) streamGetIdsToDeleted(stop chan interface{}, dateToDelete strin
 }
 
 func (e *Esssss) Run(stop chan interface{}) {
-	for iDate := 20180501; iDate < 20180526; iDate++ {
+	for iDate := e.dateStart; iDate <= e.dateEnd; iDate++ {
 		date := strconv.Itoa(iDate)
 		var num int
 		start := time.Now()
