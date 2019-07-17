@@ -12,18 +12,18 @@ import (
 var (
 	indexName		string
 	timeField 		string
-	dateEnd			int
-	dateStart 		int
+	dateEnd			string
+	dateStart 		string
 	esAddrString 	string
 )
 
 func init() {
 	flag.StringVar(&indexName, "index", "testIndex", "index name to clean.")
 	flag.StringVar(&timeField, "field", "timestamp", "filed for time.")
-	flag.IntVar(&dateEnd, "end", 20180529, "end date for clean.")
+	flag.StringVar(&dateEnd, "end", "20180529", "end date for clean.")
 	flag.StringVar(&esAddrString, "es", "http://192.168.1.1:9200,http://192.168.1.1:9200,http://192.168.1.1:9200",
 		"es cluster addr")
-	flag.IntVar(&dateStart, "start", 20180501, "start date to clean")
+	flag.StringVar(&dateStart, "start", "20180501", "start date to clean")
 
 	flag.Parse()
 }

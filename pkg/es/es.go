@@ -10,8 +10,7 @@ import (
 	"time"
 	"github.com/elastic/go-elasticsearch/esapi"
 	"strings"
-	"strconv"
-)
+	)
 
 const (
 	defaultPageSize 	= 1000
@@ -48,13 +47,13 @@ type GenericHit struct {
 type Esssss struct {
 	indexName 	string
 	timeField 	string
-	dateStart 	int
-	dateEnd 	int
+	dateStart 	string
+	dateEnd 	string
 	pageSize 	int
 	c 			*elasticsearch.Client
 }
 
-func New(addrs []string, indexName, timeField string, dateStart, dateEnd int) (*Esssss, error) {
+func New(addrs []string, indexName, timeField, dateStart, dateEnd string) (*Esssss, error) {
 	esConfig := elasticsearch.Config{
 		Addresses: addrs,
 	}
@@ -233,9 +232,27 @@ func (e *Esssss) streamGetIdsToDeleted(stop chan interface{}, dateToDelete strin
 	return outStream
 }
 
+func getDays(lastDay string, nums int) []string {
+	days := []string{}
+
+	lastDayTime, err := time.Parse("20060102", lastDay)
+	if err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < nums; i++ {
+		lastDayTime = lastDayTime.Add(-24 * time.Hour)
+		days = append(days, lastDayTime.Format("20060102"))
+	}
+
+	return days
+}
+
 func (e *Esssss) Run(stop chan interface{}) {
-	for iDate := e.dateStart; iDate <= e.dateEnd; iDate++ {
-		date := strconv.Itoa(iDate)
+	days := getDays(e.dateEnd, 200)
+	glog.V(2).Infof("delete indices for days: %v", days)
+
+	for _, date := range days {
 		var num int
 		start := time.Now()
 		for obj := range e.streamDeleteIds(stop, e.streamGetIdsToDeleted(stop, date)) {
