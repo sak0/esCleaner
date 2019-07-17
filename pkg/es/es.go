@@ -231,7 +231,11 @@ func (e *Esssss) streamGetIdsToDeleted(stop chan interface{}) chan interface{} {
 }
 
 func (e *Esssss) Run(stop chan interface{}) {
+	var num int
+	start := time.Now()
 	for obj := range e.streamDeleteIds(stop, e.streamGetIdsToDeleted(stop)) {
+		num++
 		glog.V(2).Infof("%v", obj)
 	}
+	glog.V(2).Infof("delete %d docs spend %v", num * e.pageSize, time.Since(start))
 }
